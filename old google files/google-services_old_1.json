@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "44132293598",
+    "project_id": "ecart-customer-2cbae",
+    "storage_bucket": "ecart-customer-2cbae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44132293598:android:b252c3c58fe8813191db4f",
+        "android_client_info": {
+          "package_name": "wrteam.ecart.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44132293598-gcacgmg4utc8hggivjf6nov13rf8j85s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "wrteam.ecart.shop",
+            "certificate_hash": "81605bfdca0c559340bdc3f7e58c67e4f7150665"
+          }
+        },
+        {
+          "client_id": "44132293598-ajs15d8emq5ut1j36mqpvmic0f0kb85j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDU-WEIQutkrEY4Bis6Dj74G0r1koAqV0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "44132293598-ajs15d8emq5ut1j36mqpvmic0f0kb85j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

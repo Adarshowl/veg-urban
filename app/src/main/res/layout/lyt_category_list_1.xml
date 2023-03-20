@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?><!--<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="150dp"-->
+<!--    android:layout_marginHorizontal="5dp"-->
+<!--    android:layout_marginTop="5dp"-->
+<!--    android:layout_marginBottom="5dp"-->
+<!--    android:background="@drawable/bg_cat_border"-->
+<!--    android:maxWidth="120dp"-->
+<!--    app:cardCornerRadius="10dp">-->
+
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/lytMain"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@color/color1">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvTitle1"-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:fontFamily="@font/open_sans"-->
+
+<!--            android:gravity="center"-->
+<!--            android:lines="1"-->
+<!--            android:paddingStart="@dimen/dimen_5dp"-->
+<!--            android:paddingEnd="@dimen/dimen_5dp"-->
+<!--            android:text="fresh"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="10dp" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvTitle"-->
+<!--            android:layout_width="match_parent"-->
+
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/tvTitle1"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="0dp"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:fontFamily="@font/open_sans_bold"-->
+<!--            android:gravity="center"-->
+<!--            android:lines="1"-->
+<!--            android:paddingStart="2dp"-->
+<!--            android:paddingEnd="2dp"-->
+<!--            android:text="vegetables"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="13dp"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imgCategory"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="75dp"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:contentDescription="@string/app_name"-->
+<!--            android:fitsSystemWindows="true"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:src="@drawable/intro_a" />-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_round_bg"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:layout_below="@id/tvTitle"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:background="@drawable/bg_cat_internal"-->
+<!--            android:visibility="gone">-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_cat_bg"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:contentDescription="@string/app_name"-->
+<!--                android:fitsSystemWindows="true"-->
+<!--                android:padding="15dp"-->
+<!--                android:scaleType="fitXY"-->
+<!--                android:src="@drawable/ic_card"-->
+<!--                app:tint="@color/white" />-->
+<!--        </LinearLayout>-->
+
+<!--        &lt;!&ndash;    <TextView&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:id="@+id/tvTitle"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:layout_width="100dp"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:ellipsize="end"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:gravity="center"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:lines="1"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:paddingStart="@dimen/dimen_5dp"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:paddingEnd="@dimen/dimen_5dp"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:textAlignment="center"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:textColor="@color/black"&ndash;&gt;-->
+<!--        &lt;!&ndash;        android:textSize="@dimen/_10ssp" />&ndash;&gt;-->
+<!--    </RelativeLayout>-->
+
+<!--</androidx.cardview.widget.CardView>-->
+
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="150dp"
+    android:layout_width="match_parent"
+    android:maxWidth="120dp"
+
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
+    app:cardMaxElevation="5dp">
+
+    <RelativeLayout
+        android:id="@+id/lytMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imgCategoryCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/imgCategory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom|center_vertical"
+                android:background="@drawable/bg_cat_border"
+                android:contentDescription="@string/app_name"
+                android:fitsSystemWindows="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/intro_a" />
+        </androidx.cardview.widget.CardView>
+        <!--        <View android:id="@+id/view"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            />-->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/image_shadow"
+            android:ellipsize="end"
+            android:fontFamily="@font/open_sans_bold"
+            android:lines="1"
+            android:paddingVertical="10dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:text="vegetables"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView><!--</androidx.cardview.widget.CardView>-->
+
+
+
+

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    app:ignore="NamespaceTypo,Overdraw">
+
+    <LinearLayout
+        android:id="@+id/lytLocationSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="5dp"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:background="@drawable/search_card_shadow"
+       >
+
+<!--        <EditText-->
+<!--            android:id="@+id/searchView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginStart="@dimen/_5sdp"-->
+<!--            android:layout_marginEnd="@dimen/_5sdp"-->
+<!--            android:background="@color/transparent"-->
+<!--            android:drawableStart="@drawable/ic_search"-->
+<!--            android:drawablePadding="@dimen/_5sdp"-->
+<!--            android:drawableTint="@color/gray"-->
+<!--            android:hint="@string/search_for_location"-->
+<!--            android:importantForAutofill="no"-->
+<!--            android:inputType="text"-->
+<!--            android:maxLines="1"-->
+<!--            android:paddingStart="25dp"-->
+<!--            android:paddingEnd="15dp"-->
+<!--            android:textSize="14dp" />-->
+
+        <AutoCompleteTextView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@color/transparent"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="@dimen/_5sdp"
+            android:drawableTint="@color/gray"
+            android:hint="@string/search_for_location"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingStart="25dp"
+            android:paddingEnd="15dp"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/lytChooseViewParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lytLocationSearchView"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/primary_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorPrimary" />
+
+        <LinearLayout
+            android:id="@+id/lytChooseView"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_border"
+            android:orientation="vertical"
+            android:padding="@dimen/_3sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/transparent"
+                android:drawableLeft="@drawable/ic_baseline_my_location_24"
+                android:drawablePadding="@dimen/_5sdp"
+                android:drawableTint="@color/gray"
+                android:gravity="center"
+                android:text="@string/choose_current_location"
+                android:textAlignment="center"
+                android:textColor="@color/gray"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lytRecentView"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/search_card_shadow"
+            android:orientation="horizontal"
+            android:padding="@dimen/_4sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:drawablePadding="@dimen/_5sdp"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:text="@string/recent_search"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                app:ignore="RtlCompat" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:background="@color/transparent"
+                android:drawablePadding="@dimen/_5sdp"
+                android:gravity="center"
+                android:text="@string/clear"
+                android:textColor="@color/blue"
+                android:id="@+id/tvClear"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recent_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lytChooseViewParent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_below="@id/rv_recent_search"
+        android:layout_marginTop="10dp"
+        android:background="@color/bg_color"
+        android:src="@drawable/powered_by_google" />
+</RelativeLayout>

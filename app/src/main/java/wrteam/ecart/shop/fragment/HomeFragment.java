@@ -260,12 +260,16 @@ public class HomeFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
+                try {
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    geocoder = new Geocoder(getContext());
+                    getCurrentLocation();
+                } catch (Exception e) {
+
                 }
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                geocoder = new Geocoder(getContext());
-                getCurrentLocation();
             }
         }, 7000);
         // location code end

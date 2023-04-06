@@ -25,6 +25,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
     public static BottomNavigationView bottomNavigationView;
     public static Fragment active;
     public static FragmentManager fm = null;
-    //    public static Fragment homeFragment, categoryFragment, favoriteFragment, trackOrderFragment, drawerFragment, cartFragment;
-    public static Fragment homeFragment, categoryFragment, favoriteFragment, trackOrderFragment, drawerFragment;
+    public static Fragment homeFragment, categoryFragment, favoriteFragment, trackOrderFragment, drawerFragment, cartFragment;
+    //    public static Fragment homeFragment, categoryFragment, favoriteFragment, trackOrderFragment, drawerFragment;
     public static boolean homeClicked = false, categoryClicked = false, favoriteClicked = false, drawerClicked = false;
     @SuppressLint("StaticFieldLeak")
     public static Activity activity;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
     public static int counts = 0;
     static TextView badgeCount;
     static JSONObject jsonObject;
-    Fragment cartFragment = new CartFragment();
+    //    Fragment cartFragment = new CartFragment();
     boolean doubleBackToExitPressedOnce = false;
     Menu menu;
     DatabaseHelper databaseHelper;
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
         favoriteFragment = new FavoriteFragment();
         trackOrderFragment = new TrackOrderFragment();
         drawerFragment = new DrawerFragment();
-//        cartFragment = new CartFragment();
+        cartFragment = new CartFragment();
 
 
         Bundle bundle = new Bundle();
@@ -279,16 +280,20 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
 
                     case R.id.navCart:
                         if (active != cartFragment) {
+//                            cartFragment = CartFragment.newInstance("", "");
+                            cartFragment =new CartFragment();
                             Log.d(TAG, "onCreate: 1");
                             bottomNavigationView.getMenu().findItem(item.getItemId()).setChecked(true);
                             if (!drawerClicked) {
                                 Log.d(TAG, "onCreate: 2");
                                 fm.beginTransaction().add(R.id.container, cartFragment).show(cartFragment).hide(active).commit();
+//                    openFragment(CartFragment.newInstance("", ""));
                                 drawerClicked = true;
                             } else {
                                 Log.d(TAG, "onCreate: 3");
+                                fm.beginTransaction().add(R.id.container, cartFragment).show(cartFragment).hide(active).commit();
 
-                                fm.beginTransaction().show(cartFragment).hide(active).commit();
+//                                fm.beginTransaction().show(cartFragment).hide(active).commit();
 
                             }
                             active = cartFragment;
@@ -298,6 +303,29 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                 return false;
             }
         });
+
+//        bottomNavigationView.setOnItemSelectedListener(item -> {
+//
+//            switch (item.getItemId()) {
+//                case R.id.navMain:
+//                    openFragment(new HomeFragment());
+//                    return true;
+//                case R.id.navCategory:
+//
+//                    openFragment(new CategoryFragment());
+//                    return true;
+//                case R.id.navWishList:
+//
+//                    openFragment(new FavoriteFragment());
+//                    return true;
+//                case R.id.navCart:
+//                    openFragment(CartFragment.newInstance("", ""));
+//                    return true;
+//
+//            }
+//            return false;
+//        });
+
 
         switch (from) {
             case "checkout":
@@ -548,6 +576,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
     @Override
     protected void onResume() {
         super.onResume();
+
         getCartData();
     }
 
@@ -595,5 +624,11 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
         Toast.makeText(activity, s + bundle.toString(), Toast.LENGTH_LONG).show();
     }
 
+    public void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
 }

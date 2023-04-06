@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Constant {
     //MODIFICATION PART
 //    public static final String MainBaseURL = "https://arowiz.com/pdemo/ecart/"; //Admin panel url
-    public static final String MainBaseURL = "https://vegurban.com/"; //Admin panel url
+    public static final String MainBaseURL = "https://vegurban.com/admin/"; //Admin panel url
 
     //If you have eCart Website then place here website URL otherwise admin panel url
 //    public static final String WebsiteUrl = "https://arowiz.com/pdemo/ecart/";

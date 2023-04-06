@@ -102,6 +102,17 @@ public class CartFragment extends Fragment {
         }
         tvTotalItems.setText(count + (count == 1 ? activity.getString(R.string.item) : activity.getString(R.string.items)));
     }
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    public static CartFragment newInstance(String param1, String param2) {
+        CartFragment fragment = new CartFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

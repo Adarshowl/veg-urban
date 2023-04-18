@@ -93,7 +93,7 @@ public class OfflineCartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             CartFragment.lytEmpty.setVisibility(View.GONE);
             CartFragment.lytTotal.setVisibility(View.VISIBLE);
         }
-        MainActivity.showNotificationBadge1(getItemCount());
+        MainActivity.showNotificationBadge(getItemCount());
 
     }
 

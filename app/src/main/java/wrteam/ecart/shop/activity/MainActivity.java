@@ -5,11 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +27,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
@@ -87,38 +89,72 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
     ImageView imageMenu, imageHome;
     CardView cardViewHamburger;
 
-    private static void showNotificationBadge() {
-        BottomNavigationItemView itemView = bottomNavigationView.findViewById(R.id.navCart);
-        notificationIndicator = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.custom_badge_layout, bottomNavigationView, false);
-        notificationIndicator.setVisibility(View.VISIBLE);
-        badgeCount = notificationIndicator.findViewById(R.id.notifications_badge);
-        Log.d(TAG, "getCartData:showNotificationBadge total " + counts);
-        if (counts <= 0) {
-            notificationIndicator.setVisibility(View.GONE);
-        }
-        if (counts == 0) {
-            notificationIndicator.setVisibility(View.GONE);
+    public static void showNotificationBadge(int count) {
+//        try {
+//            BottomNavigationItemView itemView = bottomNavigationView.findViewById(R.id.navCart);
+//            notificationIndicator = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.custom_badge_layout, bottomNavigationView, false);
+////            notificationIndicator.setVisibility(View.VISIBLE);
+//            badgeCount = notificationIndicator.findViewById(R.id.notifications_badge);
+//            Log.d(TAG, "getCartData:showNotificationBadge total working " + count);
+//
+//            if (count == 0) {
+//                itemView.removeView(notificationIndicator);
+//                notificationIndicator.setVisibility(View.GONE);
+//                badgeCount.setText("0" );
+//            } else {
+//                badgeCount.setText("" +count);
+//                itemView.addView(notificationIndicator);
+//            }
+//        } catch (Exception e) {
+//            Log.d(TAG, "getCartData main Exception" + e);
+//        }
+        BadgeDrawable badge = bottomNavigationView.getOrCreateBadge(R.id.navCart);
+
+        if (Constant.TOTAL_CART_ITEM != 0) {
+            badge.setVisible(true);
+            badge.setNumber(Constant.TOTAL_CART_ITEM);
+            badge.setBackgroundColor(Color.parseColor("#f56667"));
+            badge.setBadgeTextColor(Color.parseColor("#ffffff"));
         } else {
-            notificationIndicator.setVisibility(View.VISIBLE);
-            badgeCount.setText("" + counts);
+            if (badge != null) {
+                badge.setVisible(false);
+                badge.clearNumber();
+                bottomNavigationView.removeBadge(R.id.navCart);
+            }
         }
-        itemView.addView(notificationIndicator);
     }
 
-    public static void showNotificationBadge1(int count) {
-        BottomNavigationItemView itemView = bottomNavigationView.findViewById(R.id.navCart);
-        notificationIndicator = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.custom_badge_layout, bottomNavigationView, false);
-        notificationIndicator.setVisibility(View.VISIBLE);
-        badgeCount = notificationIndicator.findViewById(R.id.notifications_badge);
-        Log.d(TAG, "getCartData:showNotificationBadge total " + count);
-        if (count == 0) {
-            notificationIndicator.setVisibility(View.GONE);
-        } else {
-            notificationIndicator.setVisibility(View.VISIBLE);
-            badgeCount.setText("" + counts);
-        }
-        itemView.addView(notificationIndicator);
-    }
+//    @SuppressLint("ResourceAsColor")
+//    public static void showNotificationBadge1(int count) {
+////        getnewCartData();
+//        BottomNavigationItemView itemView = bottomNavigationView.findViewById(R.id.navCart);
+//        notificationIndicator = LayoutInflater.from(activity.getApplicationContext()).inflate(R.layout.custom_badge_layout, bottomNavigationView, false);
+//        notificationIndicator.setVisibility(View.VISIBLE);
+//        badgeCount = notificationIndicator.findViewById(R.id.notifications_badge);
+//        Log.d(TAG, "getCartData:showNotificationBadge1 total working " + Constant.TOTAL_CART_ITEM);
+//        if (Constant.TOTAL_CART_ITEM == 0) {
+//
+//            notificationIndicator.setVisibility(View.GONE);
+//            badgeCount.setVisibility(View.GONE);
+//            badgeCount.setText("");
+//            badgeCount.setBackgroundColor(R.color.white);
+//            notificationIndicator.setBackgroundColor(R.color.white);
+//            Log.d(TAG, "getCartData main 1" + Constant.TOTAL_CART_ITEM);
+//
+//        } else if (Constant.TOTAL_CART_ITEM <= 0) {
+//            notificationIndicator.setVisibility(View.GONE);
+//            badgeCount.setVisibility(View.GONE);
+//            badgeCount.setText("");
+//            Log.d(TAG, "getCartData main 2" + Constant.TOTAL_CART_ITEM);
+//
+//        } else {
+//            notificationIndicator.setVisibility(View.VISIBLE);
+//            badgeCount.setText("" + Constant.TOTAL_CART_ITEM);
+//            itemView.addView(notificationIndicator);
+//            Log.d(TAG, "getCartData main 3" + Constant.TOTAL_CART_ITEM);
+//
+//        }
+//    }
 
     @SuppressLint("SetTextI18n")
     public static void getCartData() {
@@ -135,9 +171,8 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                     if (!jsonObject.getBoolean(Constant.ERROR)) {
                         Constant.TOTAL_CART_ITEM = Integer.parseInt(jsonObject.getString(Constant.TOTAL));
                         counts = Integer.parseInt(jsonObject.getString(Constant.TOTAL));
-
+showNotificationBadge(counts);
                         Log.d(TAG, "getCartData: total " + counts);
-                        showNotificationBadge();
 
                     } else {
                     }
@@ -147,8 +182,43 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                 }
             }
         }, activity, Constant.CART_URL, params, false);
-        showNotificationBadge();
+        showNotificationBadge(counts);
 
+    }
+
+    public static void getnewCartData() {
+
+        Map<String, String> params = new HashMap<>();
+        params.put(Constant.GET_USER_CART, Constant.GetVal);
+        params.put(Constant.USER_ID, session.getData(Constant.ID));
+        Log.d(TAG, "getCartData: params " + params);
+        ApiConfig.RequestToVolley((result, response) -> {
+            if (result) {
+                try {
+//                    System.out.println("====res "+response);
+                    jsonObject = new JSONObject(response);
+                    if (!jsonObject.getBoolean(Constant.ERROR)) {
+                        Constant.TOTAL_CART_ITEM = Integer.parseInt(jsonObject.getString(Constant.TOTAL));
+                        counts = Integer.parseInt(jsonObject.getString(Constant.TOTAL));
+
+                        Log.d(TAG, "getCartData: total " + counts);
+
+                    } else {
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        }, activity, Constant.CART_URL, params, false);
+
+    }
+
+    public static void removeBadge(BottomNavigationView navigationView, int index) {
+        BottomNavigationMenuView bottomNavigationMenuView = (BottomNavigationMenuView) navigationView.getChildAt(index);
+        View v = bottomNavigationMenuView.getChildAt(0);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+        itemView.setVisibility(View.GONE);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -212,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
             fm.beginTransaction().add(R.id.container, homeFragment).commit();
         }
 
-        showNotificationBadge();
+        showNotificationBadge(counts);
 
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -220,9 +290,9 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                 switch (item.getItemId()) {
                     case R.id.navMain:
                         if (active != homeFragment) {
-                            if (notificationIndicator != null) {
-                                getCartData();
-                            }
+//                            if (notificationIndicator != null) {
+//                                getCartData();
+//                            }
                             bottomNavigationView.getMenu().findItem(item.getItemId()).setChecked(true);
                             if (!homeClicked) {
                                 fm.beginTransaction().add(R.id.container, homeFragment).show(homeFragment).hide(active).commit();
@@ -235,10 +305,10 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                         break;
                     case R.id.navCategory:
                         if (active != categoryFragment) {
-                            if (notificationIndicator != null) {
-                                getCartData();
-//                                notificationIndicator.setVisibility(View.VISIBLE);
-                            }
+//                            if (notificationIndicator != null) {
+//                                getCartData();
+////                                notificationIndicator.setVisibility(View.VISIBLE);
+//                            }
                             bottomNavigationView.getMenu().findItem(item.getItemId()).setChecked(true);
                             if (!categoryClicked) {
                                 fm.beginTransaction().add(R.id.container, categoryFragment).show(categoryFragment).hide(active).commit();
@@ -251,10 +321,10 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                         break;
                     case R.id.navWishList:
                         if (active != favoriteFragment) {
-                            if (notificationIndicator != null) {
-                                getCartData();
-//                                notificationIndicator.setVisibility(View.VISIBLE);
-                            }
+//                            if (notificationIndicator != null) {
+//                                getCartData();
+////                                notificationIndicator.setVisibility(View.VISIBLE);
+//                            }
                             bottomNavigationView.getMenu().findItem(item.getItemId()).setChecked(true);
                             if (!favoriteClicked) {
                                 fm.beginTransaction().add(R.id.container, favoriteFragment).show(favoriteFragment).hide(active).commit();
@@ -281,7 +351,7 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                     case R.id.navCart:
                         if (active != cartFragment) {
 //                            cartFragment = CartFragment.newInstance("", "");
-                            cartFragment =new CartFragment();
+                            cartFragment = new CartFragment();
                             Log.d(TAG, "onCreate: 1");
                             bottomNavigationView.getMenu().findItem(item.getItemId()).setChecked(true);
                             if (!drawerClicked) {
@@ -450,7 +520,6 @@ public class MainActivity extends AppCompatActivity implements PaymentResultList
                 fm.beginTransaction().hide(active).show(homeFragment).commit();
                 active = homeFragment;
                 getCartData();
-
             } else {
                 Toast.makeText(this, getString(R.string.exit_msg), Toast.LENGTH_SHORT).show();
                 new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);

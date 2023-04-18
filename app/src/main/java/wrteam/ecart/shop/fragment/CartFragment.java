@@ -57,6 +57,8 @@ import wrteam.ecart.shop.model.OfflineCart;
 
 public class CartFragment extends Fragment {
     private static final String TAG = CartFragment.class.getSimpleName();
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     @SuppressLint("StaticFieldLeak")
     public static LinearLayout lytEmpty;
     @SuppressLint("StaticFieldLeak")
@@ -102,8 +104,6 @@ public class CartFragment extends Fragment {
         }
         tvTotalItems.setText(count + (count == 1 ? activity.getString(R.string.item) : activity.getString(R.string.items)));
     }
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     public static CartFragment newInstance(String param1, String param2) {
         CartFragment fragment = new CartFragment();
@@ -207,10 +207,17 @@ public class CartFragment extends Fragment {
 
         btnShowNow.setOnClickListener(v -> {
 //            MainActivity.fm.popBackStack();
-            fm.beginTransaction().show(homeFragment).hide(active).commit();
-            bottomNavigationView.setSelectedItemId(R.id.navMain);
-            homeClicked = true;
-            MainActivity.getCartData();
+            if (fm.getBackStackEntryCount() >=1) {
+                MainActivity.fm.popBackStack();
+                Log.d(TAG, "onCreateView: if esle part");
+            } else {
+                fm.beginTransaction().show(homeFragment).hide(active).commit();
+                bottomNavigationView.setSelectedItemId(R.id.navMain);
+                homeClicked = true;
+                Log.d(TAG, ":onCreateView esle part");
+
+            }
+
         });
 
         return root;
@@ -392,7 +399,7 @@ public class CartFragment extends Fragment {
         ApiConfig.RequestToVolley((result, response) -> {
             if (result) {
                 try {
-//                    System.out.println("====res "+response);
+                    System.out.println("====res getCartData" + response);
                     jsonObject = new JSONObject(response);
                     if (!jsonObject.getBoolean(Constant.ERROR)) {
                         JSONObject object = new JSONObject(response);
@@ -478,19 +485,11 @@ public class CartFragment extends Fragment {
             }
         }, activity, Constant.CART_URL, params, false);
     }
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser) {
-////            Write down your refresh code here, it will call every time user come to this fragment.
-////            If you are using listview with custom adapter, just call notifyDataSetChanged().
-//GetSettings(activity);
-//        }
-//    }
 
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "removeItem:onPause: " + session.getBoolean(Constant.IS_USER_LOGIN) + " ********** " + values.size());
         if (session.getBoolean(Constant.IS_USER_LOGIN)) {
             if (values.size() > 0) {
                 ApiConfig.AddMultipleProductInCart(session, activity, values);

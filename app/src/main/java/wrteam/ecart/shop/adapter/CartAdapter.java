@@ -41,8 +41,8 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public final int VIEW_TYPE_LOADING = 1;
     final Activity activity;
     final Session session;
-    String taxPercentage;
     final String from;
+    String taxPercentage;
 
 
     public CartAdapter(Activity activity, String from) {
@@ -58,39 +58,58 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void removeItem(int position) {
-        Cart cart = CartFragment.carts.get(position);
+        try {
+            Cart cart = CartFragment.carts.get(position);
 
-        totalCalculate(cart);
+            totalCalculate(cart);
 
-        if (CartFragment.values.containsKey(cart.getProduct_variant_id())) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                CartFragment.values.replace(cart.getProduct_variant_id(), "0");
+            if (CartFragment.values.containsKey(cart.getProduct_variant_id())) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    CartFragment.values.replace(cart.getProduct_variant_id(), "0");
+                } else {
+                    CartFragment.values.remove(cart.getProduct_variant_id());
+                    CartFragment.values.put(cart.getProduct_variant_id(), "0");
+                }
             } else {
-                CartFragment.values.remove(cart.getProduct_variant_id());
                 CartFragment.values.put(cart.getProduct_variant_id(), "0");
             }
-        } else {
-            CartFragment.values.put(cart.getProduct_variant_id(), "0");
-        }
+            Log.d(TAG, "removeItem:CartFragment.values " + CartFragment.values.toString());
+            CartFragment.carts.remove(cart);
+            for (int i = 0; i < CartFragment.carts.size(); i++) {
+                Log.d(TAG, "removeItem:CartFragment.values for  CartFragment.carts " + CartFragment.carts.get(i).getProduct_id());
+            }
 
-        CartFragment.carts.remove(cart);
-//        CartFragment.variantIdList.clear();
-        CartFragment.variantIdList.remove(cart.getProduct_variant_id());
-        CartFragment.isSoldOut = false;
-        notifyDataSetChanged();
-        Constant.TOTAL_CART_ITEM = getItemCount();
-        CartFragment.SetData(activity);
-        activity.invalidateOptionsMenu();
-        if (getItemCount() == 0 && CartFragment.saveForLater.size() == 0) {
-            CartFragment.lytEmpty.setVisibility(View.VISIBLE);
-            CartFragment.lytTotal.setVisibility(View.GONE);
-        } else {
-            CartFragment.lytEmpty.setVisibility(View.GONE);
-            CartFragment.lytTotal.setVisibility(View.VISIBLE);
-        }
-        showUndoSnackBar(cart, position);
-        MainActivity.showNotificationBadge1(getItemCount());
+            //        CartFragment.variantIdList.clear();
+            CartFragment.variantIdList.remove(cart.getProduct_variant_id());
+            Log.d(TAG, "removeItem:CartFragment.values CartFragment.variantIdList"+CartFragment.variantIdList);
 
+            CartFragment.isSoldOut = false;
+            notifyDataSetChanged();
+            Constant.TOTAL_CART_ITEM = getItemCount();
+            CartFragment.SetData(activity);
+            activity.invalidateOptionsMenu();
+            if (getItemCount() == 0 && CartFragment.saveForLater.size() == 0) {
+                CartFragment.lytEmpty.setVisibility(View.VISIBLE);
+                CartFragment.lytTotal.setVisibility(View.GONE);
+            } else {
+                CartFragment.lytEmpty.setVisibility(View.GONE);
+                CartFragment.lytTotal.setVisibility(View.VISIBLE);
+            }
+            showUndoSnackBar(cart, position);
+         MainActivity.showNotificationBadge(getItemCount());
+//            MainActivity.showNotificationBadge();
+            Log.d("cart adapter", "removeItem: " + cart.getId() +
+                    " " +
+                    CartFragment.values.containsKey(cart.getProduct_variant_id()) + " " +
+                    Build.VERSION.SDK_INT + " " + " " + Constant.TOTAL_CART_ITEM
+            );
+
+            ApiConfig.AddMultipleProductInCart(session,activity,CartFragment.values);
+            ApiConfig.getCartItemCount(activity, session);
+
+        } catch (Exception e) {
+            Log.d("cart adapter", "removeItem:remove item exception -> " + e.toString());
+        }
     }
 
     public void totalCalculate(Cart cart) {
@@ -280,7 +299,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                         CartFragment.values.replace(cart.getProduct_variant_id(), "" + count);
                                         CartFragment.qtyList.remove(position);
-                                        CartFragment.qtyList.add(position,""+count);
+                                        CartFragment.qtyList.add(position, "" + count);
                                     } else {
                                         CartFragment.values.remove(cart.getProduct_variant_id());
                                         CartFragment.values.put(cart.getProduct_variant_id(), "" + count);
@@ -332,6 +351,51 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return position;
     }
 
+    void showUndoSnackBar(Cart cart, int position) {
+        final Snackbar snackbar = Snackbar.make(activity.findViewById(android.R.id.content), activity.getString(R.string.undo_message), Snackbar.LENGTH_LONG);
+        snackbar.setAction(activity.getString(R.string.undo), view -> {
+            snackbar.dismiss();
+            String taxPercentage1 = "0";
+            try {
+                taxPercentage1 = (Double.parseDouble(cart.getItems().get(0).getTax_percentage()) > 0 ? cart.getItems().get(0).getTax_percentage() : "0");
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            double price;
+            if (cart.getItems().get(0).getDiscounted_price().equals("0") || cart.getItems().get(0).getDiscounted_price().equals("")) {
+                price = ((Float.parseFloat(cart.getItems().get(0).getPrice()) + ((Float.parseFloat(cart.getItems().get(0).getPrice()) * Float.parseFloat(taxPercentage1)) / 100)));
+            } else {
+                price = ((Float.parseFloat(cart.getItems().get(0).getDiscounted_price()) + ((Float.parseFloat(cart.getItems().get(0).getDiscounted_price()) * Float.parseFloat(taxPercentage1)) / 100)));
+            }
+
+            Constant.FLOAT_TOTAL_AMOUNT += (price * Integer.parseInt(cart.getQty()));
+
+            CartFragment.values.put(cart.getProduct_variant_id(), cart.getQty());
+
+            add(position, cart);
+            notifyDataSetChanged();
+            CartFragment.SetData(activity);
+            CartFragment.isSoldOut = false;
+            Constant.TOTAL_CART_ITEM = getItemCount();
+            MainActivity.counts = getItemCount();
+
+            CartFragment.SetData(activity);
+            if (getItemCount() != 0) {
+                CartFragment.lytTotal.setVisibility(View.VISIBLE);
+                CartFragment.lytEmpty.setVisibility(View.GONE);
+            }
+            ApiConfig.AddMultipleProductInCart(session, activity, CartFragment.values);
+            activity.invalidateOptionsMenu();
+        });
+        snackbar.setActionTextColor(Color.WHITE);
+        View snackBarView = snackbar.getView();
+        TextView textView = snackBarView.findViewById(R.id.snackbar_text);
+        textView.setMaxLines(5);
+        snackbar.show();
+    }
+
     static class ViewHolderLoading extends RecyclerView.ViewHolder {
         public final ProgressBar progressBar;
 
@@ -377,50 +441,5 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             lytQuantity = itemView.findViewById(R.id.lytQuantity);
             lytMain = itemView.findViewById(R.id.lytMain);
         }
-    }
-
-    void showUndoSnackBar(Cart cart, int position) {
-        final Snackbar snackbar = Snackbar.make(activity.findViewById(android.R.id.content), activity.getString(R.string.undo_message), Snackbar.LENGTH_LONG);
-        snackbar.setAction(activity.getString(R.string.undo), view -> {
-            snackbar.dismiss();
-            String taxPercentage1 = "0";
-            try {
-                taxPercentage1 = (Double.parseDouble(cart.getItems().get(0).getTax_percentage()) > 0 ? cart.getItems().get(0).getTax_percentage() : "0");
-            } catch (Exception e) {
-                e.printStackTrace();
-
-            }
-
-            double price;
-            if (cart.getItems().get(0).getDiscounted_price().equals("0") || cart.getItems().get(0).getDiscounted_price().equals("")) {
-                price = ((Float.parseFloat(cart.getItems().get(0).getPrice()) + ((Float.parseFloat(cart.getItems().get(0).getPrice()) * Float.parseFloat(taxPercentage1)) / 100)));
-            } else {
-                price = ((Float.parseFloat(cart.getItems().get(0).getDiscounted_price()) + ((Float.parseFloat(cart.getItems().get(0).getDiscounted_price()) * Float.parseFloat(taxPercentage1)) / 100)));
-            }
-
-            Constant.FLOAT_TOTAL_AMOUNT += (price * Integer.parseInt(cart.getQty()));
-
-            CartFragment.values.put(cart.getProduct_variant_id(), cart.getQty());
-
-            add(position, cart);
-            notifyDataSetChanged();
-            CartFragment.SetData(activity);
-            CartFragment.isSoldOut = false;
-            Constant.TOTAL_CART_ITEM = getItemCount();
-            MainActivity.counts = getItemCount();
-
-            CartFragment.SetData(activity);
-            if (getItemCount() != 0) {
-                CartFragment.lytTotal.setVisibility(View.VISIBLE);
-                CartFragment.lytEmpty.setVisibility(View.GONE);
-            }
-            ApiConfig.AddMultipleProductInCart(session, activity, CartFragment.values);
-            activity.invalidateOptionsMenu();
-        });
-        snackbar.setActionTextColor(Color.WHITE);
-        View snackBarView = snackbar.getView();
-        TextView textView = snackBarView.findViewById(R.id.snackbar_text);
-        textView.setMaxLines(5);
-        snackbar.show();
     }
 }

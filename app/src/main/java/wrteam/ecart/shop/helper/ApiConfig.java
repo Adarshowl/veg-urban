@@ -320,6 +320,7 @@ public class ApiConfig extends Application {
             if (result) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
+                    Log.d(TAG, "removeItem:cart adapter getCartItemCount: "+response);
                     if (!jsonObject.getBoolean(Constant.ERROR)) {
                         Constant.TOTAL_CART_ITEM = Integer.parseInt(jsonObject.getString(Constant.TOTAL));
                         counts = Integer.parseInt(jsonObject.getString(Constant.TOTAL));
@@ -492,6 +493,8 @@ public class ApiConfig extends Application {
 
     public static void AddMultipleProductInCart(final Session session, final Activity activity, HashMap<String, String> map) {
         try {
+            Log.d(TAG, "removeItem:AddMultipleProductInCart: map size -> "+map.size());
+
             if (map.size() > 0) {
                 String ids = map.keySet().toString().replace("[", "").replace("]", "").replace(" ", "");
                 String qty = map.values().toString().replace("[", "").replace("]", "").replace(" ", "");
@@ -502,12 +505,15 @@ public class ApiConfig extends Application {
                 params.put(Constant.PRODUCT_VARIANT_ID, ids);
                 params.put(Constant.QTY, qty);
                 ApiConfig.RequestToVolley((result, response) -> {
+                    Log.d(TAG, "AddMultipleProductInCart: result -> "+result);
+                    Log.d(TAG, "AddMultipleProductInCart: params -> "+params);
                     if (result) {
                         getCartItemCount(activity, session);
                     }
                 }, activity, Constant.CART_URL, params, false);
             }
         } catch (Exception e) {
+            Log.d(TAG, "removeItem:AddMultipleProductInCart: excepton -> "+e);
             e.printStackTrace();
         }
     }

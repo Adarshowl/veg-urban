@@ -87,9 +87,9 @@
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
 
+    <!--    <string name="choose_delivery_address">Choose Delivery Address</string>-->
     <string name="title_home">Home</string>
     <string name="cart">Cart</string>
-    <!--    <string name="choose_delivery_address">Choose Delivery Address</string>-->
     <string name="choose_delivery_address">Delivery Address</string>
     <string name="select_address">Select Address</string>
     <string name="change_pass">Change Password</string>

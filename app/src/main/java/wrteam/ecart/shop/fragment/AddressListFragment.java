@@ -256,4 +256,3 @@ public class AddressListFragment extends Fragment {
         menu.findItem(R.id.toolbar_search).setVisible(false);
     }
 }
-

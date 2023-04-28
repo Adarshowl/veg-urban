@@ -29,7 +29,10 @@
                 android:id="@+id/img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
                 android:contentDescription="@string/app_name"
                 app:srcCompat="@drawable/ic_invite_and_earn" />
 
